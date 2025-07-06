@@ -12,9 +12,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import { useEffect, useState } from "react";
-import { getAuthToken } from "@/lib/auth";
+import { getAuthToken, logout } from "@/lib/auth";
 import { ProfileComponent } from "@/components/ProfileComponent/ProfileComponent";
-import path from "path";
 
 const NavbarComponent = ({  
   logo = {
@@ -52,6 +51,13 @@ const NavbarComponent = ({
 
   const pathName = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    setToken(null);
+  };
 
   // Add scroll effect
   useEffect(() => {
@@ -62,13 +68,31 @@ const NavbarComponent = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Check for token on component mount and when needed
+  useEffect(() => {
+    const checkToken = () => {
+      const authToken = getAuthToken();
+      setToken(authToken);
+    };
+    
+    checkToken();
+    
+    // Optional: Listen for storage changes to update token state
+    const handleStorageChange = () => {
+      checkToken();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   if(pathName === '/login' || 
     pathName === '/signup' ||
     pathName === '/dashboard/table'
   ) {
     return null;
   }
-  const token = getAuthToken();
+
   console.log('token', token)
 
   return (
@@ -112,31 +136,47 @@ const NavbarComponent = ({
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-3">
-            <Button 
-              asChild 
-              variant="ghost" 
-              size="sm"
-              className="font-medium hover:bg-gray-100 text-white hover:text-gray-900 transition-all duration-200"
-            >
-              {
-                token? (
+            {token ? (
+              // If user is logged in, show Dashboard button, Profile component, and Logout button
+              <>
+                <Button 
+                  asChild 
+                  variant="ghost" 
+                  size="sm"
+                  className="font-medium hover:bg-gray-100 text-white hover:text-gray-900 transition-all duration-200"
+                >
                   <Link href={"/dashboard"}>Dashboard</Link>
-              
-                ):
-                (
-                  //  <Link href={auth.login.url}>{auth.login.title}</Link>
-                  
-                  <ProfileComponent />
-                 )
-              }
-            </Button>
-            <Button 
-              asChild 
-              size="sm"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            >
-              <Link href={auth.signup.url}>{auth.signup.title}</Link>
-            </Button>
+                </Button>
+                <ProfileComponent />
+                <Button 
+                  onClick={handleLogout}
+                  variant="outline" 
+                  size="sm"
+                  className="font-medium border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              // If user is not logged in, show Login and Sign up buttons
+              <>
+                <Button 
+                  asChild 
+                  variant="ghost" 
+                  size="sm"
+                  className="font-medium hover:bg-gray-100 text-white hover:text-gray-900 transition-all duration-200"
+                >
+                  <Link href={auth.login.url}>{auth.login.title}</Link>
+                </Button>
+                <Button 
+                  asChild 
+                  size="sm"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium px-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </nav> 
 
