@@ -38,7 +38,8 @@ import {
 import Image from "next/image";
 import FetchCar from "@/lib/api";
 
-const data:CarType[] = await FetchCar(0,100)
+const data: CarType[] = await FetchCar(0, 100);
+// const data: CarType[] =[]
 
 export type CarType = {
   id: string;
@@ -49,7 +50,6 @@ export type CarType = {
   color: string;
   image: string;
 };
-
 
 export const columns: ColumnDef<CarType>[] = [
   {
@@ -138,36 +138,36 @@ export const columns: ColumnDef<CarType>[] = [
     },
     cell: ({ row }) => <div className="lowercase">{row.getValue("price")}</div>,
   },
-  
-//   {
-//     id: "actions",
-//     enableHiding: false,
-//     cell: ({ row }) => {
-//       const payment = row.original;
 
-//       return (
-//         <DropdownMenu>
-//           <DropdownMenuTrigger asChild>
-//             <Button variant="ghost" className="h-8 w-8 p-0">
-//               <span className="sr-only">Open menu</span>
-//               <MoreHorizontal />
-//             </Button>
-//           </DropdownMenuTrigger>
-//           <DropdownMenuContent align="end">
-//             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-//             <DropdownMenuItem
-//               onClick={() => navigator.clipboard.writeText(payment.id)}
-//             >
-//               Copy payment ID
-//             </DropdownMenuItem>
-//             <DropdownMenuSeparator />
-//             <DropdownMenuItem>View customer</DropdownMenuItem>
-//             <DropdownMenuItem>View payment details</DropdownMenuItem>
-//           </DropdownMenuContent>
-//         </DropdownMenu>
-//       );
-//     },
-//   },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const payment = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
 
 export function DataTableComponent() {
@@ -202,10 +202,10 @@ export function DataTableComponent() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter make..."
+          value={(table.getColumn("make")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("make")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -6,22 +6,22 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   eslint: {
-    ignoreDuringBuilds: true
+    ignoreDuringBuilds: true,
   },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'avatar.vercel.sh',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "avatar.vercel.sh",
+        pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'car-nextjs-api.cheatdev.online',
-        pathname: '/uploads/**',
-      }
-    ]
-  }
+        protocol: "https",
+        hostname: "car-nextjs-api.cheatdev.online",
+        pathname: "/uploads/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
