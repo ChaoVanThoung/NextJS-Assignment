@@ -3,7 +3,9 @@
 import BlogComponent from "@/components/BlogComponent";
 import { BlogType } from "@/lib/blog";
 import Link from "next/link";
+import { title } from "process";
 // import { use } from "react";
+
 
 const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
 // fetchData
