@@ -1,5 +1,5 @@
 
-// "use client"
+"use client"
 import BlogComponent from "@/components/BlogComponent";
 import { BlogType } from "@/lib/blog";
 import Link from "next/link";
