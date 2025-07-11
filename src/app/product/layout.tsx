@@ -35,8 +35,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function layout() {
+export default function layout(
+{children}:{children: React.ReactNode}
+) {
   return (
-    <div>This Layout Product</div>
+    <div>{children}</div>
   )
 }

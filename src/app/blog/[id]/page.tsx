@@ -1,7 +1,32 @@
 
 import BlogComponent from "@/components/BlogComponent";
-
+import { Metadata } from "next";
 const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+
+
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const post = await fetch(`${BASE_URL}/${params.id}`).then(res => res.json());
+
+  return {
+    title: post.title,
+    description: post.body.slice(0, 160),
+    openGraph: {
+      title: post.title,
+      description: post.body.slice(0, 160),
+      type: "article",
+      url: `https://yourdomain.com/blog/${params.id}`,
+    },
+    twitter: {
+      card: "summary",
+      title: post.title,
+      description: post.body.slice(0, 160),
+    },
+  };
+}
+
+
+
 // fetchData
 async function fetchData(params:number){
     const res = await 

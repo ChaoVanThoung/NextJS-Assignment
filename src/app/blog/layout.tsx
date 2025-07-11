@@ -44,7 +44,7 @@ export default function BlogLayout(
     {children}:{children: React.ReactNode}
 ){
     return(
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-20">
               <StyledComponentsRegistry>
                 <Suspense fallback={<BlogListSkeleton/>}>
                     {children}
